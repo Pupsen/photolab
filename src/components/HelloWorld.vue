@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
+import axios from 'axios'
 
 export default {
   name: 'HelloWorld',
@@ -25,8 +25,16 @@ export default {
     data() {
       return {
           input: '',
-          url: ''
-      }
+          url: '',
+          actions: [
+            {start: 4.5, end: 5.7, type: 'refraction'},
+            {start: 6.5, end: 6.7, iters: 4, type: 'loop'},
+            {start: 7, end: 7.15, type: 'reverse'},
+            {start: 11.40, end: 11.80, type: 'reverse'},
+            {start: 11.59, end: 11.80, type: 'reverse'},
+            {start: 11.70, end: 11.90, type: 'reverse'}
+            ]
+          }
     },
     methods: {
       getTime() {
@@ -36,30 +44,25 @@ export default {
       getURL() {
           this.url = this.input;
       },
-      uploadFiles () {
-          var s = this
-          const data = new FormData(document.getElementById('uploadForm'))
-          var imagefile = document.querySelector('#file')
-          this.url = imagefile.files[0]
-      }
+        uploadFiles () {
+            var s = this
+            const data = new FormData();
+            var imagefile = document.querySelector('#file');
+            data.append('file', imagefile.files[0]);
+            data.append('actions', this.actions);
+            axios.post('http://test1488.us-east-2.elasticbeanstalk.com/api/video', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(response => {
+                console.log(response)
+            })
+            .catch(error => {
+                    console.log(error.response)
+            })
+        }
     }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
