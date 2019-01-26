@@ -11,6 +11,19 @@
       <input type=button value=Upload @click="this.uploadFiles">
 
     </form>
+    <social-sharing url="vk.com/id0"
+                    title="Найдём эту мразь"
+                    description="блин блинский до новго года 5 минут"
+                    quote="Как говорил джейсон стэтэм: 'Мой отец твой дед, здравствуй сын!'"
+                    hashtags="тугосеря, пропукиваться"
+                    @open="onOpen"
+                    inline-template>
+      <div>
+        <network network="facebook">
+          <i class="fa fa-facebook"></i> Facebook
+        </network>
+      </div>
+    </social-sharing>
   </div>
 </template>
 
@@ -61,6 +74,10 @@ export default {
             .catch(error => {
                     console.log(error.response)
             })
+        },
+        onOpen(nw, url) {
+          console.log(nw)
+          console.log(url)
         }
     }
 }
