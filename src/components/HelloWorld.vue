@@ -15,9 +15,8 @@
       <button v-if="urlBase" @click="modify">МОДИФАНУТЬ</button>
       <button v-if="urlBase" @click="addAction('reverse')">Ревёрс</button>
       <button v-if="urlBase" @click="addAction('loop')">Луп</button>
-      <button v-if="urlBase" @click="addAction('reflect')">Рефлект</button>
+      <button v-if="urlBase" @click="addAction('reflect'  )">Рефлект</button>
       <button v-if="urlBase" @click="addAction('random')">Случайный</button>
-      <button v-if="urlBase" @click="modify(true)">Сделайте всё за меня</button>
       <social-sharing v-if="urlFunky" url="vk.com/id0"
                       title="блин блинский до новoго года 5 минут"
                       description="Если вы читаете это, то вы 10 лет лежите в коме, пожалуйста, просыпайтесь, родные вас ждут"
@@ -68,14 +67,16 @@ export default {
           const data = {
               start: time,
               end: time + 0.20,
-              count: 3,
+              count: 4,
               type: inType
           };
+          if (inType === 'reflect')
+              data.end += 0.30
           if (inType === 'random') {
               data.random = true
               const rand = Math.random();
-              if (rand < 0.2) data.type = 'reflect'
-              else if (rand < 0.6) data.type = 'loop'
+              if (rand < 0.3) data.type = 'reflect'
+              else if (rand < 0.65) data.type = 'loop'
               else data.type = 'reverse'
           }
           this.actions.push(data);
@@ -88,8 +89,8 @@ export default {
             const data = new FormData();
             var imagefile = document.querySelector('#file');
             data.append('file', imagefile.files[0]);
-            data.append('actions', this.actions);
             this.loading = true;
+            this.actions = [];
             axios.post('http://localhost:8000/api/video', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -97,8 +98,8 @@ export default {
             })
             .then(function(response) {
                 this.urlFunky = '';
-                this.urlBase = response.data.url.substring(40)
                 this.loading = false;
+                this.urlBase = response.data.url.substring(40)
             }.bind(this))
             .catch(error => {
                     console.log(error.response)

@@ -14,7 +14,9 @@ def reflect_video(path_to_open, path_to_save):
     while (cap.isOpened()):
         ret, frame = cap.read()
         if ret == True:
-            frame = cv2.flip(frame, 1)
+            newFrame = cv2.flip(frame, 1)
+            print(len(frame), len(frame[0]))
+            frame[:, :len(frame[0])//2] = newFrame[:, :len(frame[0])//2]
             out.write(frame)
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
