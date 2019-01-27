@@ -13,9 +13,6 @@ export default {
   components: {
     HelloWorld
   },
-    mounted() {
-      axios.get('http://test1488.us-east-2.elasticbeanstalk.com/api/video')
-    }
 
 }
 </script>
